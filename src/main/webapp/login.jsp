@@ -13,6 +13,10 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4">
+            <%
+                String app = (String) pageContext.getAttribute("app",PageContext.APPLICATION_SCOPE);
+            %>
+            <h3><%= app %></h3>
             <form action="login" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
