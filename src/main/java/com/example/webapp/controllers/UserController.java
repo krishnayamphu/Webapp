@@ -1,19 +1,22 @@
-package com.example.webapp;
+package com.example.webapp.controllers;
 
 import com.example.webapp.models.User;
 
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class TestApp {
-    public static String test() {
-        return "Testing something";
-    }
-
-    public static void main(String[] args) {
+@WebServlet(name = "UserController", value = "/users")
+public class UserController extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<User> users = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
@@ -21,22 +24,18 @@ public class TestApp {
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from users");
-
-            ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("created_at"));
                 users.add(user);
             }
             con.close();
-//            System.out.println("server connected");
-            for (User u : users) {
-                System.out.println(u.getId());
-                System.out.println(u.getUsername());
-                System.out.println(u.getPassword());
-                System.out.println(u.getCreatedAt());
-            }
         } catch (Exception e) {
             System.out.println(e);
         }
+
+       request.setAttribute("users",users);
+        request.getRequestDispatcher("users.jsp").forward(request,response);
     }
+
+
 }
