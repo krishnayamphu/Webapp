@@ -1,5 +1,6 @@
 package com.example.webapp.controllers;
 
+import com.example.webapp.database.ConnectDB;
 import com.example.webapp.models.User;
 
 import javax.servlet.*;
@@ -18,10 +19,7 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<User> users = new ArrayList<>();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/webapp", "root", "");
-
+            Connection con = ConnectDB.connect();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from users");
             while (rs.next()) {

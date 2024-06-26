@@ -16,6 +16,15 @@
 <body>
 
 <h3>All Users</h3>
+<a href="user-create">Add User</a>
+<%
+    String success= (String) session.getAttribute("success");
+    if(success!=null){
+        out.print(success);
+    }
+    session.removeAttribute("success");
+%>
+
 <table>
     <tr>
         <th>ID</th>
