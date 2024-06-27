@@ -1,5 +1,6 @@
 package com.example.webapp.controllers;
 
+import com.example.webapp.dao.UserDAO;
 import com.example.webapp.database.ConnectDB;
 import com.example.webapp.models.User;
 
@@ -33,6 +34,18 @@ public class UserController extends HttpServlet {
 
        request.setAttribute("users",users);
         request.getRequestDispatcher("users.jsp").forward(request,response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       int id=Integer.parseInt(request.getParameter("id"));
+        try {
+            UserDAO.delete(id);
+            HttpSession session=request.getSession();
+            session.setAttribute("success","User Deleted Successfully.");
+            response.sendRedirect("users");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 
