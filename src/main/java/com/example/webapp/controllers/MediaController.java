@@ -25,6 +25,12 @@ public class MediaController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String photo=request.getParameter("pic");
+        String path=getServletContext().getRealPath("/uploads/"+photo);
+        File f=new File(path);
+        if(f.delete()){
+           response.sendRedirect(request.getHeader("referer"));
+        }
 
     }
 }
